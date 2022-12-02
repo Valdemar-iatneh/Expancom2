@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Expancom2</string>
+    <string name="expancom_string">Expancom</string>
+    <string name="logo_should_be_here_string">Logo should be here</string>
 </resources>
