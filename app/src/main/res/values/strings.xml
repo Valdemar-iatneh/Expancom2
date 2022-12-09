@@ -2,4 +2,8 @@
     <string name="app_name">Expancom2</string>
     <string name="expancom_string">Expancom</string>
     <string name="logo_should_be_here_string">Logo should be here</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="history_string">History</string>
+    <string name="home_string">Home</string>
+    <string name="new_check_string">New check</string>
 </resources>
