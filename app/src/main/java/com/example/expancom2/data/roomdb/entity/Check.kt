@@ -12,7 +12,7 @@ import androidx.room.*
     ]
 )
 data class Check (
-    @PrimaryKey(autoGenerate = true) val id: Int,
+    @PrimaryKey val id: Int,
     @ColumnInfo val name: String,
     @ColumnInfo val sum: Double,
     @ColumnInfo val day: Int,

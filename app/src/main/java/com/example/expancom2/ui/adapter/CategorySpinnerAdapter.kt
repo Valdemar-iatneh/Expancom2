@@ -19,16 +19,7 @@ class CategorySpinnerAdapter(context: Context, categoryList: List<Category>) :
     val layoutInflater: LayoutInflater = LayoutInflater.from(context)
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        //val view: View
-        //if (convertView == null) {
-        //    view = layoutInflater.inflate(R.layout.spinner_category_item, parent, false)
-        //} else {
-        //    view = convertView
-        //}
-        ////getItem(position)?.let { category ->
-        ////    setItem(category)
-        ////}
-        //return view
+
         return initView(position, convertView, parent)
     }
 
@@ -51,7 +42,6 @@ class CategorySpinnerAdapter(context: Context, categoryList: List<Category>) :
         val category = getItem(position)
         val view = binding.root
         if (category != null) {
-            //view.categoryName = category.name
             binding.categoryName.text = category.name
         }
         return view

@@ -7,6 +7,7 @@ import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
@@ -27,7 +28,6 @@ class AddActivity : BaseActivity(),
     DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
     private lateinit var binding: ActivityAddBinding
     private lateinit var activityViewModel: ActivityViewModel
-    private var categoryList: List<Category> = emptyList()
 
     var day = 0
     var month = 0
@@ -41,6 +41,8 @@ class AddActivity : BaseActivity(),
     var savedHour = 0
     var savedMinute = 0
 
+    var categoryId = 0
+
     companion object {
         const val EXTRA_REPLY = "com.example.expancom2"
     }
@@ -52,32 +54,34 @@ class AddActivity : BaseActivity(),
 
         pickDate()
 
+        var categoryList: List<Category>
         val spinner = binding.categorySpinner
 
         activityViewModel = ViewModelProvider(this)[ActivityViewModel::class.java]
         activityViewModel.allCategories.observe(this, Observer { category ->
-            category?.let { categoryList = it }
+            category?.let { spinner.adapter = CategorySpinnerAdapter(this, it)}
         })
 
-
-        var list = listOf(
-            "Продукты",
-            "Досуг",
-            "Кафе",
-            "Транспорт",
-            "Здоровье",
-            "Здоровье"
-        )
-
-        //spinner.adapter = ArrayAdapter(this@AddActivity, R.layout.spinner_category_item, list)
-        spinner.adapter = CategorySpinnerAdapter(this, categoryList!!)
+        Log.d("TAG", "categorylist")
 
         spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                Toast.makeText(
-                    applicationContext,
-                    "Вы выбрали " + list[p2],
-                    Toast.LENGTH_LONG).show()
+                var itemSelected = p0!!.getItemAtPosition(p2)
+                if (itemSelected != null) {
+                    var itemSelectedName = (itemSelected as Category).name
+                    categoryId = (itemSelected as Category).id
+                    Log.d("TAG", categoryId.toString())
+
+                    Toast.makeText(
+                        applicationContext,
+                        "Вы выбрали $itemSelectedName",
+                        Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(
+                        applicationContext,
+                        "Выберите категорию",
+                        Toast.LENGTH_LONG).show()
+                }
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -86,7 +90,6 @@ class AddActivity : BaseActivity(),
                     "Ничего не выбрано",
                     Toast.LENGTH_LONG).show()
             }
-
         }
 
         binding.button.setOnClickListener {
@@ -97,6 +100,7 @@ class AddActivity : BaseActivity(),
                 TextUtils.isEmpty(binding.checkDateTimeText.text)) {
                 setResult(Activity.RESULT_CANCELED, Intent())
             } else {
+
                 val check = Check(
                     Random.nextInt(1000),
                     binding.checkNameText.text.toString(),
@@ -106,9 +110,12 @@ class AddActivity : BaseActivity(),
                     savedYear,
                     savedHour,
                     savedMinute,
-                    (binding.categorySpinner.selectedItem as Category).id
-                ).toString()
-                setResult(Activity.RESULT_OK, Intent().putExtra(EXTRA_REPLY, check))
+                    categoryId
+                )
+
+                activityViewModel.insertCheck(check)
+                setResult(Activity.RESULT_OK, Intent().putExtra(EXTRA_REPLY, check.toString()))
+                startActivity(HistoryActivity::class.java)
             }
             finish()
         }
