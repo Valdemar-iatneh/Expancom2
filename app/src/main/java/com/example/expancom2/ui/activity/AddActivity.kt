@@ -1,16 +1,45 @@
 package com.example.expancom2.ui.activity
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
+import android.view.View
+import android.widget.*
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.example.expancom2.R
+import com.example.expancom2.data.roomdb.entity.Category
+import com.example.expancom2.data.roomdb.entity.Check
 import com.example.expancom2.databinding.ActivityAddBinding
+import com.example.expancom2.ui.adapter.CategorySpinnerAdapter
+import com.example.expancom2.ui.adapter.CheckRecyclerViewAdapter
+import com.example.expancom2.ui.common.ActivityViewModel
 import com.example.expancom2.ui.common.BaseActivity
+import java.util.*
+import kotlin.random.Random
 
-class AddActivity : BaseActivity() {
+class AddActivity : BaseActivity(),
+    DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
     private lateinit var binding: ActivityAddBinding
+    private lateinit var activityViewModel: ActivityViewModel
+    private var categoryList: List<Category> = emptyList()
+
+    var day = 0
+    var month = 0
+    var year = 0
+    var hour = 0
+    var minute = 0
+
+    var savedDay = 0
+    var savedMonth = 0
+    var savedYear = 0
+    var savedHour = 0
+    var savedMinute = 0
 
     companion object {
         const val EXTRA_REPLY = "com.example.expancom2"
@@ -21,16 +50,102 @@ class AddActivity : BaseActivity() {
         binding = ActivityAddBinding.inflate(LayoutInflater.from(this))
         setContentView(binding.root)
 
-        binding.button.setOnClickListener {
-            binding.categoryShortTitle.text = binding.checkName.text!!.substring(0,1).capitalize()
+        pickDate()
 
-            if(TextUtils.isEmpty(binding.checkName.text)) {
+        val spinner = binding.categorySpinner
+
+        activityViewModel = ViewModelProvider(this)[ActivityViewModel::class.java]
+        activityViewModel.allCategories.observe(this, Observer { category ->
+            category?.let { categoryList = it }
+        })
+
+
+        var list = listOf(
+            "Продукты",
+            "Досуг",
+            "Кафе",
+            "Транспорт",
+            "Здоровье",
+            "Здоровье"
+        )
+
+        //spinner.adapter = ArrayAdapter(this@AddActivity, R.layout.spinner_category_item, list)
+        spinner.adapter = CategorySpinnerAdapter(this, categoryList!!)
+
+        spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                Toast.makeText(
+                    applicationContext,
+                    "Вы выбрали " + list[p2],
+                    Toast.LENGTH_LONG).show()
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                Toast.makeText(
+                    applicationContext,
+                    "Ничего не выбрано",
+                    Toast.LENGTH_LONG).show()
+            }
+
+        }
+
+        binding.button.setOnClickListener {
+            binding.categoryShortTitle.text = (binding.categorySpinner.selectedItem as Category).name!!.substring(0,1).capitalize()
+
+            if(TextUtils.isEmpty(binding.checkNameText.text) ||
+                TextUtils.isEmpty(binding.checkSumText.text) ||
+                TextUtils.isEmpty(binding.checkDateTimeText.text)) {
                 setResult(Activity.RESULT_CANCELED, Intent())
             } else {
-                val check = binding.checkName.text.toString()
+                val check = Check(
+                    Random.nextInt(1000),
+                    binding.checkNameText.text.toString(),
+                    binding.checkSumText.text.toString().toDouble(),
+                    savedDay,
+                    savedMonth,
+                    savedYear,
+                    savedHour,
+                    savedMinute,
+                    (binding.categorySpinner.selectedItem as Category).id
+                ).toString()
                 setResult(Activity.RESULT_OK, Intent().putExtra(EXTRA_REPLY, check))
             }
             finish()
         }
     }
+
+    private fun getDateTimeCalendar() {
+        val cal: Calendar = Calendar.getInstance()
+        day = cal.get(Calendar.DAY_OF_MONTH)
+        month = cal.get(Calendar.MONTH)
+        year = cal.get(Calendar.YEAR)
+        hour = cal.get(Calendar.HOUR)
+        minute = cal.get(Calendar.MINUTE)
+    }
+
+    private fun pickDate() {
+        binding.selectDateTimeBtn.setOnClickListener {
+            getDateTimeCalendar()
+
+            DatePickerDialog(this, this, year, month, day).show()
+        }
+    }
+
+    override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
+        savedDay = day
+        savedMonth = month
+        savedYear = year
+
+        TimePickerDialog(this, this, hour, minute, true).show()
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onTimeSet(p0: TimePicker?, p1: Int, p2: Int) {
+        savedHour = hour
+        savedMinute = minute
+
+        binding.checkDateTimeText.setText("$savedDay-$savedMonth-$savedYear\n $savedHour:$savedMinute")
+        binding.checkDateTime.visibility = View.VISIBLE
+    }
+
 }

@@ -13,21 +13,30 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.expancom2.data.roomdb.entity.Category
 import com.example.expancom2.data.roomdb.entity.Check
 import com.example.expancom2.databinding.ActivityHistoryBinding
 import com.example.expancom2.databinding.DeleteDialogBinding
 import com.example.expancom2.ui.adapter.CheckRecyclerViewAdapter
 import com.example.expancom2.ui.common.ActivityViewModel
 import com.example.expancom2.ui.common.BaseActivity
+import java.util.*
 import kotlin.random.Random
 
 class HistoryActivity : BaseActivity() {
-    private val newCheckActivityRequectCode = 1
-
     private lateinit var binding: ActivityHistoryBinding
     private lateinit var bindingDelete: DeleteDialogBinding
     private lateinit var activityViewModel: ActivityViewModel
     private lateinit var deleteDialog: Dialog
+
+    private var categoryData = listOf(
+        Category(1, "Продукты", 0, "#000000"),
+        Category(2, "Досуг", 0, "#aaaaaa"),
+        Category(3, "Кафе", 0, "#cccccc"),
+        Category(4, "Транспорт", 0, "#555555"),
+        Category(5, "Здоровье", 0, "#eeeeee"),
+        Category(6, "Здоровье", 0, "#bbbbbb")
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,18 +47,29 @@ class HistoryActivity : BaseActivity() {
         checkRecyclerView.layoutManager = LinearLayoutManager(this)
         //checkRecyclerView.adapter = CheckRecyclerViewAdapter()
 
-        activityViewModel = ViewModelProvider(this)
-            .get(ActivityViewModel::class.java)
-        activityViewModel.allCheks.observe(this, Observer { check ->
+        activityViewModel = ViewModelProvider(this)[ActivityViewModel::class.java]
+        activityViewModel.allChecks.observe(this, Observer { check ->
             check?.let { checkRecyclerView.adapter = CheckRecyclerViewAdapter(it) }
         })
+        activityViewModel.insertCategories(categoryData)
 
         val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
                 result.data?.getStringExtra(AddActivity.EXTRA_REPLY)?.let {
-                    val check = Check(Random.nextInt(1000), it)
-                    activityViewModel.insert(check)
+                    val checkLikeList = it.toList()
+                    var check = Check(
+                        checkLikeList[0].toInt(),
+                        checkLikeList[1].toString(),
+                        checkLikeList[2].toDouble(),
+                        checkLikeList[3].toInt(),
+                        checkLikeList[4].toInt(),
+                        checkLikeList[5].toInt(),
+                        checkLikeList[6].toInt(),
+                        checkLikeList[7].toInt(),
+                        checkLikeList[8].toInt()
+                    )
+                    activityViewModel.insertCheck(check)
                 }
             } else {
                 Toast.makeText(
