@@ -23,11 +23,17 @@ class ActivityViewModel(application: Application) : AndroidViewModel(application
         allCategories = repository.allCategories
     }
 
-    fun getCategory(id: Int) {
+    fun updateCategory(category: Category) {
         viewModelScope.launch {
-            repository.getCategoryById(id)
+            repository.updateCategory(category)
         }
     }
+
+    //fun getCategoryById(id: Int): LiveData<Category> {
+    //    viewModelScope.launch {
+    //        repository.getCategoryById(id)
+    //    }
+    //}
 
     fun insertCheck(check: Check) {
         viewModelScope.launch {

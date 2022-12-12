@@ -41,7 +41,8 @@ class CheckRecyclerViewAdapter(
         val current = checkList[position]
         binding.checkName.text = current.name
         binding.checkSum.text = current.sum.toString()
-        binding.checkCategory.text = getCategoryById(current.categoryId).toString()
+        binding.checkCategory.text = getCategoryNameById(current.categoryId)
+        binding.checkCategorySum.text = getCategorySumById(current.categoryId)
         binding.checkDateTime.text = current.date.toString()
         binding.tcCircle.text = binding.checkName.text.substring(0,1).capitalize()
         val rnd = Random()
@@ -51,7 +52,11 @@ class CheckRecyclerViewAdapter(
 
     override fun getItemCount() = checkList.size
 
-    private fun getCategoryById(id: Int): String? {
+    private fun getCategoryNameById(id: Int): String? {
         return categoryList.first { it.id == id}.name
+    }
+
+    private fun getCategorySumById(id: Int): String? {
+        return categoryList.first { it.id == id}.sum.toString()
     }
 }

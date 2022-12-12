@@ -52,7 +52,7 @@
             android:layout_marginEnd="8dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:outlineSpotShadowColor="@color/colorPrimaryDark"
-            android:hint="Enter name "
+            android:hint="Введите название"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.242"
             app:layout_constraintStart_toStartOf="parent"
@@ -74,7 +74,7 @@
             android:layout_marginEnd="8dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:outlineSpotShadowColor="@color/colorPrimaryDark"
-            android:hint="Enter sum "
+            android:hint="Введите сумму"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.242"
             app:layout_constraintStart_toStartOf="parent"
@@ -98,7 +98,7 @@
             android:enabled="false"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:outlineSpotShadowColor="@color/colorPrimaryDark"
-            android:hint="DateTime"
+            android:hint="Дата и время"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.242"
             app:layout_constraintStart_toStartOf="parent"
@@ -115,7 +115,7 @@
             android:id="@+id/selectDateTimeBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="SELECT DATETIME"
+            android:text="Выберите дату и время"
             android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="8dp"
@@ -124,27 +124,42 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/checkDateTime"/>
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/selectTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Выберите категорию"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:layout_constraintEnd_toStartOf="@id/categorySpinner"
+            app:layout_constraintHorizontal_bias="0.242"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/selectDateTimeBtn"/>
+
         <Spinner
             android:id="@+id/categorySpinner"
             android:spinnerMode="dropdown"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="8dp"
+            android:autofillHints="ds"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.242"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/selectTV"
             app:layout_constraintTop_toBottomOf="@+id/selectDateTimeBtn"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/button"
+        android:id="@+id/saveBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="16dp"
-        android:text="SUBMIT"
+        android:text="Сохранить"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textInputLayout"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,10 +16,8 @@ class CategorySpinnerAdapter(context: Context, categoryList: List<Category>) :
     ArrayAdapter<Category> (context, 0, categoryList) {
 
     private lateinit var binding: SpinnerCategoryItemBinding
-    val layoutInflater: LayoutInflater = LayoutInflater.from(context)
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-
         return initView(position, convertView, parent)
     }
 
@@ -43,6 +41,7 @@ class CategorySpinnerAdapter(context: Context, categoryList: List<Category>) :
         val view = binding.root
         if (category != null) {
             binding.categoryName.text = category.name
+            binding.categoryName.setBackgroundColor(Color.parseColor(category.color))
         }
         return view
     }

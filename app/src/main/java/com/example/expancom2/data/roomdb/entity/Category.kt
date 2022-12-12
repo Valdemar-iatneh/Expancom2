@@ -6,6 +6,6 @@ import androidx.room.*
 data class Category (
     @PrimaryKey val id: Int,
     @ColumnInfo val name: String?,
-    @ColumnInfo val sum: Int,
+    @ColumnInfo var sum: Double,
     @ColumnInfo val color: String
 )

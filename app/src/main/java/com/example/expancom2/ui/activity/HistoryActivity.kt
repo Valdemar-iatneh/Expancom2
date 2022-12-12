@@ -27,12 +27,12 @@ class HistoryActivity : BaseActivity() {
     private lateinit var categoryList: List<Category>
     private lateinit var checkList: List<Check>
 
-    private var cat1 = Category(1, "Продукты", 0, "#000000")
-    private var cat2 = Category(2, "Досуг", 0, "#aaaaaa")
-    private var cat3 = Category(3, "Кафе", 0, "#cccccc")
-    private var cat4 = Category(4, "Транспорт", 0, "#555555")
-    private var cat5 = Category(5, "Здоровье", 0, "#eeeeee")
-    private var cat6 = Category(6, "Семья и дом", 0, "#bbbbbb")
+    private var cat1 = Category(1, "Продукты", 0.0, "#6600ff")
+    private var cat2 = Category(2, "Досуг", 0.0, "#30d5c8")
+    private var cat3 = Category(3, "Кафе", 0.0, "#9b2d30")
+    private var cat4 = Category(4, "Транспорт", 0.0, "#fde910")
+    private var cat5 = Category(5, "Здоровье", 0.0, "#8b0000")
+    private var cat6 = Category(6, "Семья и дом", 0.0, "#ffa500")
 
     private val date: Calendar = Calendar.getInstance()
     //private var checkItem6 = Check(Random.nextInt(1000), "Монитор", 100.0, date.set(2022, 11, 12, 2, 2), 1)
@@ -62,11 +62,6 @@ class HistoryActivity : BaseActivity() {
         activityViewModel.insertCategory(cat4)
         activityViewModel.insertCategory(cat5)
         activityViewModel.insertCategory(cat6)
-
-        //date.set(2022, 11, 12, 2, 2)
-        //val checkItem6 = Check(Random.nextInt(1000), "Монитор", 100.0, date.time, 1)
-//
-        //activityViewModel.insertCheck(checkItem6)
 
         binding.fab.setOnClickListener {
             startActivity(AddActivity::class.java)
