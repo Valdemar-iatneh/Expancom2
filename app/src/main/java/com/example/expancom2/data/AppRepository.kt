@@ -10,6 +10,10 @@ class AppRepository(private val checkDao: CheckDao, private val categoryDao: Cat
     val allCategories: LiveData<List<Category>> = categoryDao.getCategories()
     val allChecks: LiveData<List<Check>> = checkDao.getChecks()
 
+    fun getCategoryById(id: Int) {
+        categoryDao.getCategoryById(id)
+    }
+
     suspend fun insertCategories(categories: List<Category>) {
         categoryDao.insertCategories(categories)
     }

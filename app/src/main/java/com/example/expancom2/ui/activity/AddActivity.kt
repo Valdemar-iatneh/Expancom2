@@ -6,6 +6,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.provider.CalendarContract.CalendarAlerts
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
@@ -28,14 +29,15 @@ class AddActivity : BaseActivity(),
     DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
     private lateinit var binding: ActivityAddBinding
     private lateinit var activityViewModel: ActivityViewModel
+    private val cal: Calendar = Calendar.getInstance()
 
-    var day = 0
-    var month = 0
-    var year = 0
-    var hour = 0
-    var minute = 0
+    //var day = 0
+    //var month = 0
+    //var year = 0
+    //var hour = 0
+    //var minute = 0
 
-    var savedDay = 0
+    var savedDay = 1
     var savedMonth = 0
     var savedYear = 0
     var savedHour = 0
@@ -54,7 +56,6 @@ class AddActivity : BaseActivity(),
 
         pickDate()
 
-        var categoryList: List<Category>
         val spinner = binding.categorySpinner
 
         activityViewModel = ViewModelProvider(this)[ActivityViewModel::class.java]
@@ -62,14 +63,12 @@ class AddActivity : BaseActivity(),
             category?.let { spinner.adapter = CategorySpinnerAdapter(this, it)}
         })
 
-        Log.d("TAG", "categorylist")
-
         spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 var itemSelected = p0!!.getItemAtPosition(p2)
                 if (itemSelected != null) {
                     var itemSelectedName = (itemSelected as Category).name
-                    categoryId = (itemSelected as Category).id
+                    categoryId = itemSelected.id
                     Log.d("TAG", categoryId.toString())
 
                     Toast.makeText(
@@ -98,21 +97,15 @@ class AddActivity : BaseActivity(),
             if(TextUtils.isEmpty(binding.checkNameText.text) ||
                 TextUtils.isEmpty(binding.checkSumText.text) ||
                 TextUtils.isEmpty(binding.checkDateTimeText.text)) {
-                setResult(Activity.RESULT_CANCELED, Intent())
-            } else {
 
+            } else {
                 val check = Check(
                     Random.nextInt(1000),
                     binding.checkNameText.text.toString(),
                     binding.checkSumText.text.toString().toDouble(),
-                    savedDay,
-                    savedMonth,
-                    savedYear,
-                    savedHour,
-                    savedMinute,
+                    cal.time,
                     categoryId
                 )
-
                 activityViewModel.insertCheck(check)
                 setResult(Activity.RESULT_OK, Intent().putExtra(EXTRA_REPLY, check.toString()))
                 startActivity(HistoryActivity::class.java)
@@ -121,37 +114,59 @@ class AddActivity : BaseActivity(),
         }
     }
 
-    private fun getDateTimeCalendar() {
-        val cal: Calendar = Calendar.getInstance()
-        day = cal.get(Calendar.DAY_OF_MONTH)
-        month = cal.get(Calendar.MONTH)
-        year = cal.get(Calendar.YEAR)
-        hour = cal.get(Calendar.HOUR)
-        minute = cal.get(Calendar.MINUTE)
-    }
+    //private fun getDateTimeCalendar() {
+    //    day = cal.get(Calendar.DAY_OF_MONTH)
+    //    month = cal.get(Calendar.MONTH)
+    //    year = cal.get(Calendar.YEAR)
+    //    hour = cal.get(Calendar.HOUR)
+    //    minute = cal.get(Calendar.MINUTE)
+    //}
 
     private fun pickDate() {
         binding.selectDateTimeBtn.setOnClickListener {
-            getDateTimeCalendar()
+            //getDateTimeCalendar()
 
-            DatePickerDialog(this, this, year, month, day).show()
+            DatePickerDialog(
+                this,
+                this,
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.DAY_OF_MONTH)).show()
         }
     }
 
-    override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
-        savedDay = day
-        savedMonth = month
-        savedYear = year
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        //savedDay = day
+        //savedMonth = month
+        //savedYear = year
+        cal.set(year, month, dayOfMonth, cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE))
 
-        TimePickerDialog(this, this, hour, minute, true).show()
+        TimePickerDialog(
+            this,
+            this,
+            cal.get(Calendar.HOUR),
+            cal.get(Calendar.MINUTE),
+            true).show()
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onTimeSet(p0: TimePicker?, p1: Int, p2: Int) {
-        savedHour = hour
-        savedMinute = minute
+    override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+        cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), hourOfDay, minute)
+        Log.d("time", cal.get(GregorianCalendar.YEAR).toString())
+        Log.d("time", cal.get(GregorianCalendar.MONTH).toString())
+        Log.d("time", cal.get(GregorianCalendar.DAY_OF_MONTH).toString())
+        Log.d("time", cal.get(GregorianCalendar.HOUR_OF_DAY).toString())
+        Log.d("time", cal.get(GregorianCalendar.MINUTE).toString())
 
-        binding.checkDateTimeText.setText("$savedDay-$savedMonth-$savedYear\n $savedHour:$savedMinute")
+        //savedYear = cal.get(Calendar.YEAR)
+        //savedMonth = cal.get(Calendar.MONTH)
+        //savedDay = cal.get(Calendar.DAY_OF_MONTH)
+        //savedHour = cal.get(Calendar.HOUR)
+        //savedMinute = cal.get(Calendar.MINUTE)
+
+        val time = cal.time.toString()
+
+        binding.checkDateTimeText.setText(time)
         binding.checkDateTime.visibility = View.VISIBLE
     }
 
