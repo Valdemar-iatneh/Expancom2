@@ -1,6 +1,7 @@
 package com.example.expancom2.data
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.example.expancom2.data.roomdb.dao.CategoryDao
 import com.example.expancom2.data.roomdb.dao.CheckDao
 import com.example.expancom2.data.roomdb.entity.Category
@@ -10,9 +11,9 @@ class AppRepository(private val checkDao: CheckDao, private val categoryDao: Cat
     val allCategories: LiveData<List<Category>> = categoryDao.getCategories()
     val allChecks: LiveData<List<Check>> = checkDao.getChecks()
 
-    fun getCategoryById(id: Int): LiveData<Category> {
-        return categoryDao.getCategoryById(id)
-    }
+    //fun getCategoryById(id: Int): LiveData<Category> {
+    //    return categoryDao.getCategoryById(id)
+    //}
 
     suspend fun insertCategories(categories: List<Category>) {
         categoryDao.insertCategories(categories)

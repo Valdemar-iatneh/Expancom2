@@ -13,10 +13,10 @@ import java.util.*
     ]
 )
 data class Check (
-    @PrimaryKey val id: Int,
-    @ColumnInfo val name: String,
-    @ColumnInfo val sum: Double,
-    @ColumnInfo val date: Date,
-    @ColumnInfo val categoryId: Int
+    @PrimaryKey var id: Int,
+    @ColumnInfo var name: String,
+    @ColumnInfo var sum: Double,
+    @ColumnInfo var date: Date,
+    @ColumnInfo var categoryId: Int
 )
 

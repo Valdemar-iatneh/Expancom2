@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
+import androidx.core.text.set
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.expancom2.R
@@ -31,12 +32,8 @@ class AddActivity : BaseActivity(),
     private lateinit var binding: ActivityAddBinding
     private lateinit var activityViewModel: ActivityViewModel
     private val cal: Calendar = Calendar.getInstance()
-
-    var savedDay = 1
-    var savedMonth = 0
-    var savedYear = 0
-    var savedHour = 0
-    var savedMinute = 0
+    private var currentSum: Double = 0.0
+    //private var currentCheck = Check(Random.nextInt(1000), "Монитор", 200.0, Calendar.getInstance().time, 2)
 
     var categoryId = 0
 
@@ -53,6 +50,7 @@ class AddActivity : BaseActivity(),
 
         val spinner = binding.categorySpinner
         var categoryList = emptyList<Category>()
+        //currentCheck.sum = currentSum
 
         activityViewModel = ViewModelProvider(this)[ActivityViewModel::class.java]
         activityViewModel.allCategories.observe(this, Observer { category ->
@@ -69,47 +67,64 @@ class AddActivity : BaseActivity(),
                     val itemSelectedName = (itemSelected as Category).name
                     binding.selectTV.visibility = View.GONE
                     categoryId = itemSelected.id
-                    Toast.makeText(
-                        applicationContext,
-                        "Вы выбрали $itemSelectedName",
-                        Toast.LENGTH_LONG).show()
                 }
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
-                Toast.makeText(
-                    applicationContext,
-                    "Ничего не выбрано",
-                    Toast.LENGTH_LONG).show()
+
             }
         }
 
+
         binding.saveBtn.setOnClickListener {
-            binding.categoryShortTitle.text = (binding.categorySpinner.selectedItem as Category).name!!.substring(0,1).capitalize()
-
-            if(TextUtils.isEmpty(binding.checkNameText.text) ||
-                TextUtils.isEmpty(binding.checkSumText.text) ||
-                TextUtils.isEmpty(binding.checkDateTimeText.text)) {
-
+            if (binding.checkNameText.text.toString().isEmpty()) {
+                Toast.makeText(
+                    applicationContext,
+                    "Введите наименование расхода",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else if (binding.checkSumText.text.toString().isEmpty()) {
+                Toast.makeText(
+                    applicationContext,
+                    "Введиет сумму расхода",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else if (binding.checkDateTimeText.text.toString().isEmpty()) {
+                Toast.makeText(
+                    applicationContext,
+                    "Выберите дату расхода",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else if (categoryId == 0) {
+                Toast.makeText(
+                    applicationContext,
+                    "Выберите категорию расхода",
+                    Toast.LENGTH_LONG
+                ).show()
             } else {
-                val check = Check(
-                    Random.nextInt(1000),
+                binding.categoryShortTitle.text = (binding.categorySpinner.selectedItem as Category).name!!.substring(0,1).capitalize()
+
+                if (binding.checkSumText.text.toString().isNotEmpty()) {
+                    currentSum = binding.checkSumText.text.toString().toDouble()
+                }
+
+                val currentCheck = Check(
+                    Random.nextInt(10000),
                     binding.checkNameText.text.toString(),
-                    binding.checkSumText.text.toString().toDouble(),
+                    currentSum,
                     cal.time,
                     categoryId
                 )
 
                 val categorySelected = categoryList.first { it.id == categoryId}
-
-                categorySelected.sum += binding.checkSumText.text.toString().toDouble()
+                categorySelected.sum += currentSum
                 activityViewModel.updateCategory(categorySelected)
-                Log.d("cat", categorySelected.toString())
+                //Log.d("cat", categorySelected.toString())
 
-                activityViewModel.insertCheck(check)
-                setResult(Activity.RESULT_OK, Intent().putExtra(EXTRA_REPLY, check.toString()))
+                activityViewModel.insertCheck(currentCheck)
+                setResult(Activity.RESULT_OK, Intent().putExtra(EXTRA_REPLY, currentCheck.toString()))
+                finish()
             }
-            finish()
         }
     }
 

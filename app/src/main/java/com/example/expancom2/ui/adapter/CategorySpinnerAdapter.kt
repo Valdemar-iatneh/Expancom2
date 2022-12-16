@@ -40,6 +40,8 @@ class CategorySpinnerAdapter(context: Context, categoryList: List<Category>) :
         val category = getItem(position)
         val view = binding.root
         if (category != null) {
+            binding.icon.setImageResource(category.icon)
+            binding.icon.setBackgroundColor(Color.parseColor(category.color))
             binding.categoryName.text = category.name
             binding.categoryName.setBackgroundColor(Color.parseColor(category.color))
         }

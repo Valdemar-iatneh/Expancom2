@@ -3,6 +3,7 @@ package com.example.expancom2.ui.common
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import com.example.expancom2.data.AppRepository
 import com.example.expancom2.data.roomdb.DBService
@@ -28,12 +29,6 @@ class ActivityViewModel(application: Application) : AndroidViewModel(application
             repository.updateCategory(category)
         }
     }
-
-    //fun getCategoryById(id: Int): LiveData<Category> {
-    //    viewModelScope.launch {
-    //        repository.getCategoryById(id)
-    //    }
-    //}
 
     fun insertCheck(check: Check) {
         viewModelScope.launch {
