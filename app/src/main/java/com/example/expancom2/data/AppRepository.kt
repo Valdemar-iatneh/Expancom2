@@ -4,16 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.example.expancom2.data.roomdb.dao.CategoryDao
 import com.example.expancom2.data.roomdb.dao.CheckDao
+import com.example.expancom2.data.roomdb.dao.DateDao
 import com.example.expancom2.data.roomdb.entity.Category
 import com.example.expancom2.data.roomdb.entity.Check
 
-class AppRepository(private val checkDao: CheckDao, private val categoryDao: CategoryDao) {
+class AppRepository(
+    private val checkDao: CheckDao,
+    private val categoryDao: CategoryDao) {
+
     val allCategories: LiveData<List<Category>> = categoryDao.getCategories()
     val allChecks: LiveData<List<Check>> = checkDao.getChecks()
-
-    //fun getCategoryById(id: Int): LiveData<Category> {
-    //    return categoryDao.getCategoryById(id)
-    //}
 
     suspend fun insertCategories(categories: List<Category>) {
         categoryDao.insertCategories(categories)
@@ -39,3 +39,4 @@ class AppRepository(private val checkDao: CheckDao, private val categoryDao: Cat
         checkDao.deleteAll()
     }
 }
+

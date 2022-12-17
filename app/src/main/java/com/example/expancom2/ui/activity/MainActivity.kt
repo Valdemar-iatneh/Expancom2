@@ -9,9 +9,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.expancom2.R
 import com.example.expancom2.data.roomdb.entity.Category
 import com.example.expancom2.databinding.ActivityMainBinding
+import com.example.expancom2.ui.adapter.CategoryRecyclerViewAdapter
 import com.example.expancom2.ui.common.ActivityViewModel
 import com.example.expancom2.ui.common.BaseActivity
 import com.github.mikephil.charting.animation.Easing
@@ -29,19 +32,13 @@ class MainActivity : BaseActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var activityViewModel: ActivityViewModel
     private lateinit var categoryList: List<Category>
-
-    private var cat1 = Category(1, "Продукты", 0.0, "#6600ff", R.drawable.product_icon)
-    private var cat2 = Category(2, "Досуг", 0.0, "#30d5c8", R.drawable.entertainment_icon)
-    private var cat3 = Category(3, "Кафе", 0.0, "#9b2d30", R.drawable.food_icon)
-    private var cat4 = Category(4, "Транспорт", 0.0, "#fde910", R.drawable.transport_icon)
-    private var cat5 = Category(5, "Здоровье", 0.0, "#8b0000", R.drawable.medicine_icon)
-    private var cat6 = Category(6, "Семья и дом", 0.0, "#ffa500", R.drawable.family_icon)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
         setContentView(binding.root)
         activityViewModel = ViewModelProvider(this)[ActivityViewModel::class.java]
+
+        binding.categoryRecyclerView.layoutManager = GridLayoutManager(this, 3)
 
         initPieChart()
 
@@ -49,8 +46,13 @@ class MainActivity : BaseActivity() {
             startActivity(AddActivity::class.java)
         }
 
-        binding.diagramBtn.setOnClickListener {
+        binding.reDrawBtn.setOnClickListener {
             startActivity(MainActivity::class.java)
+            setResult(Activity.RESULT_OK, Intent().putExtra(AddActivity.EXTRA_REPLY, "sas"))
+            finish()
+        }
+
+        binding.diagramBtn.setOnClickListener {
             setResult(Activity.RESULT_OK, Intent().putExtra(AddActivity.EXTRA_REPLY, "sas"))
             finish()
         }
@@ -101,6 +103,7 @@ class MainActivity : BaseActivity() {
         activityViewModel.allCategories.observe(this, Observer { category ->
             category?.let {
                 categoryList = it
+                binding.categoryRecyclerView.adapter = CategoryRecyclerViewAdapter(this, it)
 
                 for (i in categoryList) {
                     fullSum += i.sum
@@ -119,7 +122,7 @@ class MainActivity : BaseActivity() {
                         //Log.d("sumT", t.toString())
                         //Log.d("sumE", t)
                         //sums.add(i.sum.toFloat())
-                        entries.add(PieEntry(i.sum.toFloat(), i.name))
+                        entries.add(PieEntry(i.sum.toFloat()))
                         colors.add(Color.parseColor(i.color))
                         //colors.add(Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)))
                     }

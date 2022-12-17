@@ -10,3 +10,5 @@ data class Category (
     @ColumnInfo val color: String,
     @ColumnInfo val icon: Int
 )
+
+

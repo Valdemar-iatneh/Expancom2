@@ -15,12 +15,12 @@ class SplashActivity : BaseActivity() {
     lateinit var binding: ActivitySplashBinding
     private lateinit var activityViewModel: ActivityViewModel
 
-    private var cat1 = Category(1, "Продукты", 0.0, "#6600ff", R.drawable.product_icon)
-    private var cat2 = Category(2, "Досуг", 0.0, "#30d5c8", R.drawable.entertainment_icon)
-    private var cat3 = Category(3, "Кафе", 0.0, "#9b2d30", R.drawable.food_icon)
-    private var cat4 = Category(4, "Транспорт", 0.0, "#fde910", R.drawable.transport_icon)
-    private var cat5 = Category(5, "Здоровье", 0.0, "#8b0000", R.drawable.medicine_icon)
-    private var cat6 = Category(6, "Семья и дом", 0.0, "#ffa500", R.drawable.family_icon)
+    private var cat1 = Category(1, "Продукты", 0.0, "#1b90bb", R.drawable.product_icon)
+    private var cat2 = Category(2, "Досуг", 0.0, "#30bca1", R.drawable.entertainment_icon)
+    private var cat3 = Category(3, "Кафе", 0.0, "#e398ac", R.drawable.food_icon)
+    private var cat4 = Category(4, "Транспорт", 0.0, "#e3ae1b", R.drawable.transport_icon)
+    private var cat5 = Category(5, "Здоровье", 0.0, "#951937", R.drawable.medicine_icon)
+    private var cat6 = Category(6, "Семья и дом", 0.0, "#ef8264", R.drawable.family_icon)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

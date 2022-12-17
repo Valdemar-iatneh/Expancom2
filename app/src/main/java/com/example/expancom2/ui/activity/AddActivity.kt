@@ -48,9 +48,13 @@ class AddActivity : BaseActivity(),
 
         pickDate()
 
+        binding.backBtn.setOnClickListener {
+            setResult(Activity.RESULT_OK, Intent().putExtra(EXTRA_REPLY, categoryId.toString()))
+            finish()
+        }
+
         val spinner = binding.categorySpinner
         var categoryList = emptyList<Category>()
-        //currentCheck.sum = currentSum
 
         activityViewModel = ViewModelProvider(this)[ActivityViewModel::class.java]
         activityViewModel.allCategories.observe(this, Observer { category ->
@@ -75,7 +79,6 @@ class AddActivity : BaseActivity(),
             }
         }
 
-
         binding.saveBtn.setOnClickListener {
             if (binding.checkNameText.text.toString().isEmpty()) {
                 Toast.makeText(
@@ -86,7 +89,7 @@ class AddActivity : BaseActivity(),
             } else if (binding.checkSumText.text.toString().isEmpty()) {
                 Toast.makeText(
                     applicationContext,
-                    "Введиет сумму расхода",
+                    "Введите сумму расхода",
                     Toast.LENGTH_LONG
                 ).show()
             } else if (binding.checkDateTimeText.text.toString().isEmpty()) {
@@ -107,6 +110,8 @@ class AddActivity : BaseActivity(),
                 if (binding.checkSumText.text.toString().isNotEmpty()) {
                     currentSum = binding.checkSumText.text.toString().toDouble()
                 }
+
+                //val dateSelected = dateList.first {it.date == cal.time}
 
                 val currentCheck = Check(
                     Random.nextInt(10000),
@@ -153,7 +158,7 @@ class AddActivity : BaseActivity(),
     @SuppressLint("SetTextI18n")
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), hourOfDay, minute)
-        val time = cal.time.toString()
+        val time = "${cal.get(Calendar.DAY_OF_MONTH)}.${cal.get(Calendar.DAY_OF_MONTH)}.${cal.get(Calendar.YEAR)} $hourOfDay:$minute"
 
         binding.checkDateTimeText.setText(time)
         binding.checkDateTime.visibility = View.VISIBLE

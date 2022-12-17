@@ -18,3 +18,4 @@ interface CheckDao {
     @Query("DELETE FROM check_table")
     suspend fun deleteAll()
 }
+

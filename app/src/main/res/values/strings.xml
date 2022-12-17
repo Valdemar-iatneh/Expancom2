@@ -6,4 +6,20 @@
     <string name="history_string">History</string>
     <string name="home_string">Home</string>
     <string name="new_check_string">New check</string>
+    <string name="icon_text">icon</string>
+    <string name="addbtnicon_text">addBtnIcon</string>
+    <string name="diagrammbtnicon_text">diagrammBtnIcon</string>
+    <string name="history_title_text">История расходов</string>
+    <string name="statics_text">Статистика</string>
+    <string name="adding_check_text">Добавление расхода</string>
+    <string name="add_text">Добавить</string>
+    <string name="backarrowicon_text">backArrowIcon</string>
+    <string name="redrawpiechartbtn_text">reDrawPieChartBtn</string>
+    <string name="diagrambtn_text">diagramBtn</string>
+    <string name="addbtn_text">addBtn</string>
+    <string name="datetime_text">Дата и время</string>
+    <string name="select_datetime_text">Выберите дату и время</string>
+    <string name="write_name_text">Введите наименование</string>
+    <string name="write_sum_text">Введите сумму</string>
+    <string name="delete_text">Введите наименование чека, который необходимо удалить</string>
 </resources>

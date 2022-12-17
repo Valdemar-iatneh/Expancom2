@@ -6,14 +6,54 @@
     android:layout_height="match_parent"
     tools:context=".ui.activity.AddActivity">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/teal_700"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/backBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:src="@drawable/back_arrow_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/backarrowicon_text" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/adding_check_text"
+                android:textColor="@color/white"
+                android:textSize="26sp"
+                android:layout_marginStart="-17dp"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.appbar.MaterialToolbar>
+
     <ImageView
+        android:visibility="gone"
         android:id="@+id/categoryColorImageView"
         android:layout_width="86dp"
         android:layout_height="88dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginBottom="60dp"
         android:background="@drawable/circle_shape"
         android:foregroundGravity="center"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/textInputLayout"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 
@@ -26,6 +66,7 @@
         android:maxLength="2"
         android:inputType="textCapCharacters"
         android:text="R"
+        android:visibility="gone"
         android:textSize="18sp"
         android:textColor="@color/white"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -38,13 +79,13 @@
         android:id="@+id/textInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="112dp"
+        android:layout_marginBottom="50dp"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.242"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/categoryColorImageView">
+        app:layout_constraintBottom_toTopOf="@id/saveBtn">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/checkName"
@@ -54,7 +95,7 @@
             android:layout_marginEnd="8dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:outlineSpotShadowColor="@color/colorPrimaryDark"
-            android:hint="Введите название"
+            android:hint="@string/write_name_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.242"
             app:layout_constraintStart_toStartOf="parent"
@@ -95,7 +136,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:outlineSpotShadowColor="@color/colorPrimaryDark"
                 android:layout_marginStart="8dp"
-                android:hint="Введите сумму"
+                android:hint="@string/write_sum_text"
                 app:layout_constraintStart_toEndOf="@id/signIcon"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -109,8 +150,6 @@
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/checkDateTime"
             android:layout_width="match_parent"
@@ -122,7 +161,7 @@
             android:enabled="false"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:outlineSpotShadowColor="@color/colorPrimaryDark"
-            android:hint="Дата и время"
+            android:hint="@string/datetime_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.242"
             app:layout_constraintStart_toStartOf="parent"
@@ -139,7 +178,9 @@
             android:id="@+id/selectDateTimeBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Выберите дату и время"
+            android:text="@string/select_datetime_text"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/teal_200"
             android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="8dp"
@@ -157,6 +198,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="8dp"
+            android:textSize="12sp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:layout_constraintEnd_toStartOf="@id/categorySpinner"
             app:layout_constraintHorizontal_bias="0.242"
@@ -182,9 +224,13 @@
         android:id="@+id/saveBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="40dp"
-        android:text="Сохранить"
+        android:layout_marginBottom="150dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:text="@string/add_text"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/teal_200"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textInputLayout"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

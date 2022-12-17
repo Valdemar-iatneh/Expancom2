@@ -10,4 +10,11 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="colorProduct">#1b90bb</color>
+    <color name="colorEntertainment">#30bca1</color>
+    <color name="colorFood">#e398ac</color>
+    <color name="colorTransport">#e3ae1b</color>
+    <color name="colorMedicine">#951937</color>
+    <color name="colorFamily">#ef8264</color>
+    <color name="red">#ff2b2b</color>
 </resources>
